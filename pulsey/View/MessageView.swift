@@ -16,14 +16,12 @@ struct MessageView: View {
     let message: String
     
     var body: some View {
-        //        FlowLayout {
-        HStack(spacing: 0) {
+        FlowLayout {
             ForEach(Array(displayedContent.enumerated()), id: \.0) { _, char in
                 CharacterView(
                     character: char
                 )
             }
-            //        }
         }
         .padding(15)
         .onChange(of: message, initial: true) { _, newValue in

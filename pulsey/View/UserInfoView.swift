@@ -20,7 +20,7 @@ struct UserInfoView: View {
     
     // AppStorage로 Workout 데이터 저장
     @AppStorage("user_workout_data") private var workoutData: Data = Data()
-
+    
     let genderOptions = ["남성", "여성"]
     let weekDays = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"]
     
@@ -50,6 +50,8 @@ struct UserInfoView: View {
         
         if let data = try? JSONEncoder().encode(workout) {
             workoutData = data
+            
+            print("saved!!!!")
         }
     }
     
@@ -64,6 +66,7 @@ struct UserInfoView: View {
     
     var body: some View {
         Form {
+            
             Section {
                 HStack {
                     Text("닉네임")
@@ -220,6 +223,8 @@ struct UserInfoView: View {
                     hours > 0 ? "\(hours)시간" : "\(minutes)분"
                     print("운동시간: \(durationText)")
                     
+                    saveWorkoutData()
+                    
                     if !selectedSports.isEmpty {
                         let selectedSportNames = sports.filter { selectedSports.contains($0.id) }.map { $0.name }
                         print("자주 하는 운동: \(selectedSportNames)")
@@ -273,7 +278,7 @@ struct UserInfoView: View {
             loadWorkoutData()
         }
         .onChange(of: selectedSports) { _ in
-            saveWorkoutData()
+            //            saveWorkoutData()
         }
     }
 }
