@@ -19,12 +19,6 @@ struct WorkoutDetailView: View {
 
                 // 주요 통계 섹션
                 mainStatsSection
-
-                // 추가 정보 섹션
-                additionalInfoSection
-
-                // 운동 세부 정보 섹션
-                detailInfoSection
             }
             .padding()
         }
@@ -54,6 +48,7 @@ struct WorkoutDetailView: View {
         .padding()
         .background(Color(.systemBackground))
         .cornerRadius(12)
+        .glassEffect()
     }
 
     // MARK: - Main Stats Section
@@ -102,52 +97,6 @@ struct WorkoutDetailView: View {
             }
         }
     }
-
-    // MARK: - Additional Info Section
-    private var additionalInfoSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("추가 정보")
-                .font(.headline)
-                .fontWeight(.semibold)
-
-            VStack(spacing: 8) {
-                InfoRow(title: "시작 시간", value: formattedStartTime)
-                InfoRow(title: "종료 시간", value: formattedEndTime)
-                InfoRow(title: "데이터 소스", value: workout.sourceRevision.source.name)
-
-                if let device = workout.device {
-                    InfoRow(title: "기기", value: "\(device.name ?? "알 수 없음")")
-                }
-            }
-        }
-        .padding()
-        .background(Color(.systemBackground))
-        .cornerRadius(12)
-    }
-
-    // MARK: - Detail Info Section
-    private var detailInfoSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("운동 세부 정보")
-                .font(.headline)
-                .fontWeight(.semibold)
-
-            VStack(spacing: 8) {
-                if let metadata = workout.metadata {
-                    ForEach(Array(metadata.keys), id: \.self) { key in
-                        if let value = metadata[key] {
-                            InfoRow(title: localizedMetadataKey(key), value: "\(value)")
-                        }
-                    }
-                }
-
-                InfoRow(title: "UUID", value: workout.uuid.uuidString)
-            }
-        }
-        .padding()
-        .background(Color(.systemBackground))
-        .cornerRadius(12)
-    }
 }
 
 // MARK: - Supporting Views
@@ -175,6 +124,7 @@ struct StatCard: View {
         .padding()
         .background(Color(.systemBackground))
         .cornerRadius(12)
+        .glassEffect()
     }
 }
 
