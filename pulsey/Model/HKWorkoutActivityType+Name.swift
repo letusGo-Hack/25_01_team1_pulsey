@@ -5,7 +5,6 @@
 //  Created by Mason Kim on 7/19/25.
 //
 
-
 import HealthKit
 
 public extension HKWorkoutActivityType {
