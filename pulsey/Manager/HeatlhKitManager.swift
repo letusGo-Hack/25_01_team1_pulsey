@@ -99,8 +99,10 @@ final class HealthKitManager {
     private func observeMockWorkoutUpdates() async throws {
         let mockWorkouts = [HKWorkout].mock
 
+        try await Task.sleep(for: .seconds(10))
+
         for await _ in AsyncStream<Void> { continuation in
-            let timer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true) { _ in
+            let timer = Timer.scheduledTimer(withTimeInterval: 30.0, repeats: true) { _ in
                 continuation.yield()
             }
 

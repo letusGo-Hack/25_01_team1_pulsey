@@ -37,15 +37,12 @@ final class TrainerManager {
         }
     }
 
-    func respond(trainer: Trainer, _ prompt: String) async throws -> String {
-        try checkModelAvailability()
-
+    func respond(trainer: Trainer, _ prompt: String) -> LanguageModelSession.ResponseStream<String> {
         let session = getSession(for: trainer)
-        let response = try await session.respond(
+        return session.streamResponse(
             to: prompt,
             options: .init(temperature: 0.7)
         )
-        return response.content
     }
 
     func respondForAlarm(trainer: Trainer) async throws -> String {
@@ -64,6 +61,13 @@ final class TrainerManager {
             to: "아래 운동 정보에 대한 칭찬과 격려의 동기부여 메시지를 제공해줘.\n\(workout.summaryDescription)"
         )
         return response.content
+    }
+
+    func respondStreamWithHealthData(workout: HKWorkout, trainer: Trainer) -> LanguageModelSession.ResponseStream<String>  {
+        let session = getSession(for: trainer)
+        return session.streamResponse(
+            to: "아래 운동 정보에 대한 칭찬과 격려의 동기부여 메시지를 제공해줘.\n\(workout.summaryDescription)"
+        )
     }
 
     // 스트리밍 응답을 위한 새로운 메서드 (옵션)

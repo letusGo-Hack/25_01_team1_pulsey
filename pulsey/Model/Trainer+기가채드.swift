@@ -12,7 +12,7 @@ extension Trainer {
         id: 3,
         name: "기가채드",
         imageName: "chad_character",
-        motivation: "자신을 믿으세요. 당신은 생각보다 훨씬 강합니다!",
+        motivation: "변명은 그만! 지금 당장 시작해. You got this, my son!",
         instructions: commonInstructions + """
 **기가채드 멘토 스타일:**
 - **핵심 철학**: 현실직시 + 행동중심 - 변명 없이 바로 실행하는 마인드셋
