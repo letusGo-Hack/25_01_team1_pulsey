@@ -17,6 +17,9 @@ struct UserInfoView: View {
     @State private var workoutDuration: Int = 1 // 30분 단위로 1 = 30분, 2 = 1시간, 3 = 1시간 30분...
     @State private var selectedSports: Set<Int> = []
     @State private var showingSportsSelection = false
+    
+    // AppStorage로 Workout 데이터 저장
+    @AppStorage("user_workout_data") private var workoutData: Data = Data()
 
     let genderOptions = ["남성", "여성"]
     let weekDays = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"]
@@ -36,11 +39,30 @@ struct UserInfoView: View {
         Sport(id: 11, name: "필라테스", imageName: "figure.core.training")
     ]
     
+    // Workout 데이터를 저장하는 함수
+    private func saveWorkoutData() {
+        let selectedSportObjects = sports.filter { selectedSports.contains($0.id) }
+        let workout = Workout(
+            sportsType: selectedSportObjects,
+            selectDays: Array(selectedDays),
+            workoutTime: workoutDuration
+        )
+        
+        if let data = try? JSONEncoder().encode(workout) {
+            workoutData = data
+        }
+    }
+    
+    // Workout 데이터를 로드하는 함수
+    private func loadWorkoutData() {
+        if let workout = try? JSONDecoder().decode(Workout.self, from: workoutData) {
+            selectedDays = Set(workout.selectDays)
+            workoutDuration = workout.workoutTime
+            selectedSports = Set(workout.sportsType.map { $0.id })
+        }
+    }
+    
     var body: some View {
-        //        NavigationStack {
-        //
-        //            .navigationTitle("개인 정보 입력")
-        //        }
         Form {
             Section {
                 HStack {
@@ -246,6 +268,12 @@ struct UserInfoView: View {
         }
         .sheet(isPresented: $showingSportsSelection) {
             SelectSportsView(selectedSports: $selectedSports)
+        }
+        .onAppear {
+            loadWorkoutData()
+        }
+        .onChange(of: selectedSports) { _ in
+            saveWorkoutData()
         }
     }
 }

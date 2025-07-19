@@ -20,6 +20,12 @@ struct MainView: View {
             Tab("캘린더", systemImage: "calendar") {
                 CalendarView()
             }
+            Tab("루틴", systemImage: "") {
+                UserRoutineView()
+            }
+            Tab("설정",systemImage: "") {
+                
+            }
         }
         .task {
             self.workouts = (try? await HealthKitManager.shared.fetchWorkouts()) ?? []
