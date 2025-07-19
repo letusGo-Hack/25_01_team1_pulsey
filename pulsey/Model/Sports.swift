@@ -9,7 +9,7 @@ import Foundation
 import FoundationModels
 
 @Generable
-struct Sport : Equatable, Hashable, Identifiable {
+struct Sport : Equatable, Hashable, Identifiable, Codable {
     let id : Int
     @Guide(description: "운동 이름")
     let name : String

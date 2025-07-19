@@ -9,7 +9,7 @@ import Foundation
 import FoundationModels
 
 @Generable
-struct Workout : Equatable {
+struct Workout : Equatable, Codable {
     @Guide(description: "선택한 운동 종류")
     let sportsType : [Sport]
     @Guide(description: "운동하고자 하는 요일")

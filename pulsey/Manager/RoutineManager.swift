@@ -10,7 +10,7 @@ import Observation
 
 @Observable
 @MainActor
-final class RoutinePlanner {
+class RoutinePlanner {
     private(set) var suggestionWorkout : Workout.PartiallyGenerated?
     private let session : LanguageModelSession
     let model = SystemLanguageModel.default
@@ -27,7 +27,7 @@ final class RoutinePlanner {
         })
     }
     
-    func suggestWorkout() async throws {
+    func suggestWorkout() async throws -> Workout.PartiallyGenerated? {
         let stream = session.streamResponse(
             generating: Workout.self,
             options: GenerationOptions(sampling: .greedy),
@@ -38,10 +38,12 @@ final class RoutinePlanner {
             "추천 운동 루틴은 다음과 같아요 !"
             Workout.exampleWorkouts
         }
-
+        
         for try await partialResponse in stream {
             suggestionWorkout = partialResponse
         }
+        
+        return suggestionWorkout
     }
 }
 
