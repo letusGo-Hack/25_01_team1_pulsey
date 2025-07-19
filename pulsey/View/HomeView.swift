@@ -6,11 +6,11 @@
 //
 
 import SwiftUI
+import FoundationModels
 
 struct HomeView: View {
     @State private var characterMessage = ""
     @State private var prompt = ""
-    @State private var isPlaying = false
     @AppStorage("selectedTrainer") private var selectedTrainerId: Int = 0
     private var selectedTrainer: Trainer? {
         Trainer.allTrainers.findTrainer(id: selectedTrainerId)
@@ -31,7 +31,7 @@ struct HomeView: View {
                         .font(.title3)
                 }
                 .overlay {
-                    MessageView(isPlaying: $isPlaying, message: "characterMessage")
+                    MessageView(message: "characterMessage")
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
                         .padding(.top, -54)
                 }
@@ -65,8 +65,9 @@ struct HomeView: View {
         guard let selectedTrainer else { return }
         Task {
             do {
-                let response = try await TrainerManager.shared.respond(trainer: selectedTrainer, prompt)
-                self.characterMessage = response
+                for try await response in TrainerManager.shared.respond(trainer: selectedTrainer, prompt) {
+                    self.characterMessage = response
+                }
             } catch {
                 print(error)
             }

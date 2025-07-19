@@ -17,7 +17,6 @@ struct WorkoutDetailCoachingView: View {
         Trainer.allTrainers.first(where: { $0.id == selectedTrainer })
     }
     @State private var coachingMessage: String = ""
-    @State private var isPlaying: Bool = false
 
     var body: some View {
         NavigationStack {
@@ -28,11 +27,7 @@ struct WorkoutDetailCoachingView: View {
                     }
 
                     if coachingMessage.isEmpty == false {
-                        Text(coachingMessage)
-                            .padding(12)
-                            .glassEffect(in: .rect(cornerRadius: 18))
-                            .padding()
-                            .animation(.default, value: coachingMessage)
+                        MessageView(message: coachingMessage)
                     }
 
                     WorkoutDetailView(workout: workout)
