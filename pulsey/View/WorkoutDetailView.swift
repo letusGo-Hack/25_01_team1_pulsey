@@ -30,15 +30,18 @@ struct WorkoutDetailView: View {
     // MARK: - Header Section
     private var headerSection: some View {
         VStack(spacing: 12) {
-            // 운동 아이콘
-            Image(systemName: workoutIcon)
-                .font(.system(size: 50))
-                .foregroundColor(.orange)
+            HStack {
+                // 운동 아이콘
+                if let emoji = workout.workoutActivityType.associatedEmoji() {
+                    Text(emoji)
+                        .font(.largeTitle)
+                }
 
-            // 운동 타입
-            Text(workout.workoutActivityType.koreanName)
-                .font(.title2)
-                .fontWeight(.semibold)
+                // 운동 타입
+                Text(workout.workoutActivityType.koreanName)
+                    .font(.title2)
+                    .fontWeight(.semibold)
+            }
 
             // 운동 날짜
             Text(formattedDate)
@@ -46,6 +49,7 @@ struct WorkoutDetailView: View {
                 .foregroundColor(.secondary)
         }
         .padding()
+        .frame(maxWidth: .infinity)
         .background(Color(.systemBackground))
         .cornerRadius(12)
         .glassEffect()
