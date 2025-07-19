@@ -13,4 +13,5 @@ struct User {
     let height : Int
     let gender : String
     let weight : Int
+    let workout : Workout
 }
