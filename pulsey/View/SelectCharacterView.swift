@@ -89,6 +89,7 @@ struct TrainerCard: View {
             VStack(spacing: 12) {
                 Image(trainer.imageName)
                     .resizable()
+                    .aspectRatio(contentMode: .fit)
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                     .foregroundColor(isSelected ? .blue : .gray)
                     .padding(EdgeInsets(top: 10, leading: 6, bottom: 2, trailing: 6))
