@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct UserInfoView: View {
+    @State private var nickname : String = ""
     @State private var height: String = ""
     @State private var weight: String = ""
     @State private var gender: String = "남성"
@@ -19,6 +20,14 @@ struct UserInfoView: View {
         NavigationView {
             Form {
                 Section(header: Text("개인 정보")) {
+                    HStack {
+                        Text("닉네임")
+                        Spacer()
+                        TextField("Pulsey", text: $nickname)
+                            .keyboardType(.default)
+                            .multilineTextAlignment(.trailing)
+                    }
+                    
                     HStack {
                         Text("키")
                         Spacer()
