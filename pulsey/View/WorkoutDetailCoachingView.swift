@@ -31,6 +31,7 @@ struct WorkoutDetailCoachingView: View {
                 }
             }
             .navigationTitle("운동 요약")
+            .background(Color(.systemBackground))
         }
         .task {
             do {
@@ -48,5 +49,5 @@ struct WorkoutDetailCoachingView: View {
 }
 
 #Preview {
-    WorkoutDetailCoachingView(workout: [HKWorkout].mock().randomElement()!)
+    WorkoutDetailCoachingView(workout: [HKWorkout].mock.randomElement()!)
 }
