@@ -21,10 +21,10 @@ struct SettingView: View {
     @State private var showingSportsSelection = false
     @State private var showingProfileEdit = false
     @State private var showingWorkoutEdit = false
-    
+
     let genderOptions = ["남성", "여성"]
     let weekDays = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"]
-    
+
     let sports = [
         Sport(id: 0, name: "러닝", imageName: "figure.run"),
         Sport(id: 1, name: "헬스", imageName: "dumbbell.fill"),
@@ -39,7 +39,7 @@ struct SettingView: View {
         Sport(id: 10, name: "복싱", imageName: "figure.boxing"),
         Sport(id: 11, name: "필라테스", imageName: "figure.core.training")
     ]
-    
+
     // Workout 데이터를 저장하는 함수
     private func saveWorkoutData() {
         let selectedSportObjects = sports.filter { selectedSports.contains($0.id) }
@@ -48,12 +48,12 @@ struct SettingView: View {
             selectDays: Array(selectedDays),
             workoutTime: workoutDuration
         )
-        
+
         if let data = try? JSONEncoder().encode(workout) {
             workoutData = data
         }
     }
-    
+
     // Workout 데이터를 로드하는 함수
     private func loadWorkoutData() {
         if let workout = try? JSONDecoder().decode(Workout.self, from: workoutData) {
@@ -62,7 +62,7 @@ struct SettingView: View {
             selectedSports = Set(workout.sportsType.map { $0.id })
         }
     }
-    
+
     // 운동 시간을 텍스트로 변환하는 함수
     private func getWorkoutDurationText() -> String {
         let hours = workoutDuration / 2
@@ -75,12 +75,12 @@ struct SettingView: View {
             return "\(minutes)분"
         }
     }
-    
+
     // 선택된 운동 이름들을 가져오는 함수
     private func getSelectedSportsNames() -> [String] {
         return sports.filter { selectedSports.contains($0.id) }.map { $0.name }
     }
-    
+
     var body: some View {
         NavigationView {
             List {
@@ -97,7 +97,7 @@ struct SettingView: View {
                             Image(systemName: "person.circle.fill")
                                 .foregroundColor(.blue)
                                 .font(.title2)
-                            
+
                             VStack(alignment: .leading, spacing: 4) {
                                 Text("프로필 정보")
                                     .font(.headline)
@@ -105,9 +105,9 @@ struct SettingView: View {
                                     .font(.subheadline)
                                     .foregroundColor(.secondary)
                             }
-                            
+
                             Spacer()
-                            
+
                             Image(systemName: "chevron.right")
                                 .foregroundColor(.gray)
                                 .font(.caption)
@@ -117,7 +117,7 @@ struct SettingView: View {
                 } header: {
                     Text("개인 정보")
                 }
-                
+
                 // 운동 설정 섹션
                 Section {
                     NavigationLink(destination: WorkoutSettingView(
@@ -131,7 +131,7 @@ struct SettingView: View {
                             Image(systemName: "dumbbell.fill")
                                 .foregroundColor(.green)
                                 .font(.title2)
-                            
+
                             VStack(alignment: .leading, spacing: 4) {
                                 Text("운동 설정")
                                     .font(.headline)
@@ -139,9 +139,9 @@ struct SettingView: View {
                                     .font(.subheadline)
                                     .foregroundColor(.secondary)
                             }
-                            
+
                             Spacer()
-                            
+
                             Image(systemName: "chevron.right")
                                 .foregroundColor(.gray)
                                 .font(.caption)
@@ -151,7 +151,35 @@ struct SettingView: View {
                 } header: {
                     Text("운동 스케줄")
                 }
-                
+
+                // 트레이너 선택 섹션 (새로 추가)
+                Section {
+                    NavigationLink(destination: SelectCharacterView()) {
+                        HStack {
+                            Image(systemName: "figure.strengthtraining.traditional")
+                                .foregroundColor(.purple)
+                                .font(.title2)
+
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text("트레이너 선택")
+                                    .font(.headline)
+                                Text("나만의 AI 트레이너를 선택하세요")
+                                    .font(.subheadline)
+                                    .foregroundColor(.secondary)
+                            }
+
+                            Spacer()
+
+                            Image(systemName: "chevron.right")
+                                .foregroundColor(.gray)
+                                .font(.caption)
+                        }
+                        .padding(.vertical, 4)
+                    }
+                } header: {
+                    Text("트레이너")
+                }
+
                 // 현재 설정 미리보기 섹션
                 if !height.isEmpty || !weight.isEmpty || !age.isEmpty || !selectedDays.isEmpty {
                     Section {
@@ -163,7 +191,7 @@ struct SettingView: View {
                                     Text(nickname)
                                 }
                             }
-                            
+
                             if !height.isEmpty {
                                 HStack {
                                     Text("키:")
@@ -171,7 +199,7 @@ struct SettingView: View {
                                     Text("\(height)cm")
                                 }
                             }
-                            
+
                             if !weight.isEmpty {
                                 HStack {
                                     Text("체중:")
@@ -179,7 +207,7 @@ struct SettingView: View {
                                     Text("\(weight)kg")
                                 }
                             }
-                            
+
                             if !age.isEmpty {
                                 HStack {
                                     Text("나이:")
@@ -187,13 +215,13 @@ struct SettingView: View {
                                     Text("\(age)세")
                                 }
                             }
-                            
+
                             HStack {
                                 Text("성별:")
                                     .fontWeight(.medium)
                                 Text(gender)
                             }
-                            
+
                             if !selectedDays.isEmpty {
                                 HStack {
                                     Text("운동 요일:")
@@ -201,13 +229,13 @@ struct SettingView: View {
                                     Text(selectedDays.sorted().joined(separator: ", "))
                                 }
                             }
-                            
+
                             HStack {
                                 Text("운동 시간:")
                                     .fontWeight(.medium)
                                 Text(getWorkoutDurationText())
                             }
-                            
+
                             if !selectedSports.isEmpty {
                                 HStack {
                                     Text("선택된 운동:")
@@ -221,7 +249,7 @@ struct SettingView: View {
                         Text("현재 설정")
                     }
                 }
-                
+
                 // 앱 정보 섹션
                 Section {
                     HStack {
@@ -232,7 +260,7 @@ struct SettingView: View {
                         Text("1.0.0")
                             .foregroundColor(.secondary)
                     }
-                    
+
                     HStack {
                         Image(systemName: "questionmark.circle.fill")
                             .foregroundColor(.orange)
@@ -242,7 +270,7 @@ struct SettingView: View {
                             .foregroundColor(.gray)
                             .font(.caption)
                     }
-                    
+
                     HStack {
                         Image(systemName: "envelope.fill")
                             .foregroundColor(.green)
@@ -274,9 +302,9 @@ struct ProfileEditView: View {
     @Binding var weight: String
     @Binding var gender: String
     @Binding var age: String
-    
+
     let genderOptions = ["남성", "여성"]
-    
+
     var body: some View {
         Form {
             Section {
@@ -286,7 +314,7 @@ struct ProfileEditView: View {
                     TextField("Pulsey", text: $nickname)
                         .multilineTextAlignment(.trailing)
                 }
-                
+
                 HStack {
                     Text("키")
                     Spacer()
@@ -295,7 +323,7 @@ struct ProfileEditView: View {
                         .keyboardType(.numberPad)
                     Text("cm")
                 }
-                
+
                 HStack {
                     Text("체중")
                     Spacer()
@@ -304,7 +332,7 @@ struct ProfileEditView: View {
                         .keyboardType(.numberPad)
                     Text("kg")
                 }
-                
+
                 HStack {
                     Text("성별")
                     Spacer()
@@ -316,7 +344,7 @@ struct ProfileEditView: View {
                     .pickerStyle(SegmentedPickerStyle())
                     .frame(width: 120)
                 }
-                
+
                 HStack {
                     Text("나이")
                     Spacer()
@@ -341,9 +369,9 @@ struct WorkoutSettingView: View {
     @Binding var selectedSports: Set<Int>
     let weekDays: [String]
     let sports: [Sport]
-    
+
     @State private var showingSportsSelection = false
-    
+
     private func getWorkoutDurationText() -> String {
         let hours = workoutDuration / 2
         let minutes = (workoutDuration % 2) * 30
@@ -355,7 +383,7 @@ struct WorkoutSettingView: View {
             return "\(minutes)분"
         }
     }
-    
+
     var body: some View {
         Form {
             Section {
@@ -376,7 +404,7 @@ struct WorkoutSettingView: View {
                                 .foregroundColor(.blue)
                         }
                     }
-                    
+
                     LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 7), spacing: 8) {
                         ForEach(weekDays, id: \.self) { day in
                             Button(action: {
@@ -406,7 +434,7 @@ struct WorkoutSettingView: View {
             } header: {
                 Text("운동 요일")
             }
-            
+
             Section {
                 HStack {
                     Text("운동 시간")
@@ -429,7 +457,7 @@ struct WorkoutSettingView: View {
             } header: {
                 Text("운동 시간")
             }
-            
+
             Section {
                 HStack {
                     Text("자주 하는 운동")
