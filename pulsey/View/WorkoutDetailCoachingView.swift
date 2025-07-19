@@ -16,6 +16,7 @@ struct WorkoutDetailCoachingView: View {
         Trainer.allTrainers.first(where: { $0.id == selectedTrainer })
     }
     @State private var coachingMessage: String = ""
+    @State private var isPlaying: Bool = false
 
     var body: some View {
         NavigationView {
@@ -25,7 +26,7 @@ struct WorkoutDetailCoachingView: View {
                         TrainerCard(trainer: trainer, isSelected: false, onTap: {})
                     }
 
-                    Text("\(coachingMessage)")
+                    MessageView(isPlaying: $isPlaying, message: coachingMessage)
 
                     WorkoutDetailView(workout: workout)
                 }
@@ -34,11 +35,9 @@ struct WorkoutDetailCoachingView: View {
             .background(Color(.systemBackground))
         }
         .task {
+            guard let trainer else { return }
             do {
-                let response = try await CharacterManager.shared.respondWithHealthData(
-                    health: workout.description,
-                    character: .yunSeongBin
-                ) // TODO: Trainer 방식으로 변경
+                let response = try await TrainerManager.shared.respondWithHealthData(health: workout.description, trainer: trainer)
                 self.coachingMessage = response
             } catch {
                 print(error)
