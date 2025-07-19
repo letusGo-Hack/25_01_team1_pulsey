@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 struct SelectCharacterView: View {
     @AppStorage("selectedTrainer") private var selectedTrainerId: Int = 0
     private var selectedTrainer: Trainer? {
