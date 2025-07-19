@@ -14,17 +14,16 @@ struct MainView: View {
 
     var body: some View {
         TabView {
-            Tab("홈", systemImage: "home") {
+            Tab("홈", systemImage: "house") {
                 HomeView()
             }
-            Tab("대쉬보드", systemImage: "home") {
-                Text("dashboard")
+            Tab("캘린더", systemImage: "calendar") {
+                CalendarView()
             }
         }
         .task {
             self.workouts = (try? await HealthKitManager.shared.fetchWorkouts()) ?? []
         }
-//        .tabViewStyle(.sidebarAdaptable)
         .fullScreenCover(item: $deepLinkManager.selectedWorkoutID) { selectedWorkoutID in
             if let workout = workouts.first(where: { $0.uuid.uuidString == selectedWorkoutID }) {
                 WorkoutDetailView(workout: workout)
