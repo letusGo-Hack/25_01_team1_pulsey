@@ -16,7 +16,9 @@ struct pulseyApp: App {
         WindowGroup {
             MainView()
                 .task {
+                    _ = await NotificationManager.requestNotificationPermission()
                     try? await HealthKitManager.shared.requestWorkoutAuthorization()
+                    let _ = try? await HealthKitManager.shared.startObservingWorkouts()
                 }
                 .onOpenURL { url in
                     DeepLinkManager.handleDeepLink(url)

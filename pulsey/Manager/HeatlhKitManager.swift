@@ -78,51 +78,76 @@ final class HealthKitManager {
         // 이미 관찰 중이면 중복 실행하지 않음
         guard !isObservingWorkouts else { return }
 
-        // 시뮬레이터에서는 스킵
-        guard !isSimulator else { return }
-
-        let workoutType = HKObjectType.workoutType()
-
-        // 백그라운드 전송 활성화
-        try await store.enableBackgroundDelivery(for: workoutType, frequency: .immediate)
         isObservingWorkouts = true
 
-        // 관찰 쿼리 시작
-        try await observeWorkoutUpdates()
-    }
+        // 시뮬레이터에서는 Mock 데이터로 운동 관찰 시뮬레이션
+        if isSimulator {
+            print("🏋️‍♀️ 시뮬레이터 환경에서는 Mock 데이터로 운동 관찰을 시작합니다.")
+            try await observeMockWorkoutUpdates()
+        } else {
+            let workoutType = HKObjectType.workoutType()
 
-    /// 운동 데이터 변경사항을 관찰
-    private func observeWorkoutUpdates() async throws {
-        let workoutType = HKObjectType.workoutType()
+            // 백그라운드 전송 활성화
+            try await store.enableBackgroundDelivery(for: workoutType, frequency: .immediate)
 
-        return try await withCheckedThrowingContinuation { continuation in
-            let query = HKObserverQuery(sampleType: workoutType, predicate: nil) { [weak self] query, completionHandler, error in
-                guard let self = self else {
-                    completionHandler()
-                    return
-                }
-
-                if let error = error {
-                    print("🐛 운동 관찰 에러: \(error)")
-                    completionHandler()
-                    return
-                }
-
-                print("🏋️‍♀️ Observed Workout Update")
-
-                // 최근 운동 데이터 확인
-                Task {
-                    await self.checkRecentWorkoutAndSendNotification()
-                    completionHandler()
-                }
-            }
-
-            self.store.execute(query)
-            continuation.resume()
+            // 실제 운동 데이터 관찰 시작
+            try await observeRealWorkoutUpdates()
         }
     }
 
-    /// 최근 운동을 확인하고 필요시 알림 전송
+    /// Mock 운동 데이터 변경사항을 시뮬레이션 (시뮬레이터용)
+    private func observeMockWorkoutUpdates() async throws {
+        let mockWorkouts = [HKWorkout].mock()
+
+        for await _ in AsyncStream<Void> { continuation in
+            let timer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true) { _ in
+                continuation.yield()
+            }
+
+            continuation.onTermination = { _ in
+                timer.invalidate()
+            }
+
+            // 첫 번째 이벤트를 즉시 발생
+            continuation.yield()
+        } {
+            print("🏋️‍♀️ Mock Workout Update Triggered")
+
+            // Mock 데이터에서 랜덤 운동 선택
+            guard let randomWorkout = mockWorkouts.randomElement() else { continue }
+
+            print("🏋️‍♀️👀 Mock Observed Workout: \(randomWorkout.workoutActivityType.name) \(randomWorkout)")
+            await sendNotificationIfNeeded(for: randomWorkout)
+        }
+    }
+
+    /// 실제 운동 데이터 변경사항을 관찰 (실제 기기용)
+    private func observeRealWorkoutUpdates() async throws {
+        let workoutType = HKObjectType.workoutType()
+
+        for try await _ in AsyncThrowingStream<Void, Error> { continuation in
+            let query = HKObserverQuery(sampleType: workoutType, predicate: nil) { query, completionHandler, error in
+                if let error = error {
+                    continuation.yield(with: .failure(error))
+                    return
+                }
+
+                continuation.yield()
+                completionHandler()
+            }
+
+            self.store.execute(query)
+
+            continuation.onTermination = { [weak self] _ in
+                self?.store.stop(query)
+            }
+        } {
+            print("🏋️‍♀️ Real Workout Update")
+            await checkRecentWorkoutAndSendNotification()
+        }
+    }
+
+    /// 최근 운동을 확인하고 필요시 알림 전송 (실제 기기용)
     private func checkRecentWorkoutAndSendNotification() async {
         do {
             // 최근 10분 이내의 운동 확인
@@ -132,12 +157,28 @@ final class HealthKitManager {
             let workouts = try await fetchWorkoutsWithPredicate(predicate)
             guard let latestWorkout = workouts.first else { return }
 
-            print("🏋️‍♀️👀 Observed Workout: \(latestWorkout.workoutActivityType.name) \(latestWorkout)")
+            print("🏋️‍♀️👀 Real Observed Workout: \(latestWorkout.workoutActivityType.name) \(latestWorkout)")
 
             await sendNotificationIfNeeded(for: latestWorkout)
         } catch {
             print("🐛 최근 운동 확인 에러: \(error)")
         }
+    }
+
+    /// 운동 관찰 중단
+    func stopObservingWorkouts() {
+        guard isObservingWorkouts else { return }
+
+        if !isSimulator {
+            let workoutType = HKObjectType.workoutType()
+            store.disableBackgroundDelivery(for: workoutType) { success, error in
+                if let error = error {
+                    print("🐛 백그라운드 전송 비활성화 에러: \(error)")
+                }
+            }
+        }
+
+        isObservingWorkouts = false
     }
 
     /// 특정 조건의 운동 데이터 가져오기
@@ -194,19 +235,5 @@ final class HealthKitManager {
             body: "\(workoutName) \(duration)분 운동을 완료했습니다!",
             deepLink: "pulsey://workout?id=\(workout.uuid.uuidString)" // 형식 변경
         )
-    }
-
-    /// 운동 관찰 중단
-    func stopObservingWorkouts() {
-        guard isObservingWorkouts else { return }
-
-        let workoutType = HKObjectType.workoutType()
-        store.disableBackgroundDelivery(for: workoutType) { success, error in
-            if let error = error {
-                print("🐛 백그라운드 전송 비활성화 에러: \(error)")
-            }
-        }
-
-        isObservingWorkouts = false
     }
 }
