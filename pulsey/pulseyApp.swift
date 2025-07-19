@@ -10,6 +10,7 @@ import HealthKit
 
 @main
 struct pulseyApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @State private var workouts: [HKWorkout] = []
 
     var body: some Scene {
