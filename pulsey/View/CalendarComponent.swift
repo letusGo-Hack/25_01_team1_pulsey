@@ -60,18 +60,18 @@ struct CalendarComponent: View {
                     .font(.subheadline)
 //                    .foregroundStyle(.label(.normal))
             }
-            .scaledButton()
-            Text(month.toString("yyyy.MM"))
-                .myFont(.headlineM)
-                .foregroundStyle(.label(.normal))
+//            .scaledButton()
+//            Text(month.toString("yyyy.MM"))
+//                .myFont(.headlineM)
+//                .foregroundStyle(.label(.normal))
             Button {
                 currentMonthIndex += 1
             } label: {
                 Image(systemName: "chevron.right")
                     .font(.subheadline)
-                    .foregroundStyle(.label(.normal))
+//                    .foregroundStyle(.label(.normal))
             }
-            .scaledButton()
+//            .scaledButton()
         }
     }
 
@@ -83,9 +83,10 @@ struct CalendarComponent: View {
                     selected: selected?.equals(date, components: [.year, .month, .day], using: calendar) ?? false,
                     isToday: Date.now.equals(date, components: [.year, .month, .day], using: calendar),
                     isCurrentMonthDay: calendar.isDate(date, equalTo: targetMonth, toGranularity: .month),
-                    hasProduct: products.contains {
-                        $0.expirationDate.equals(date, components: [.year, .month, .day], using: calendar)
-                    }
+//                    hasProduct: products.contains {
+//                        $0.expirationDate.equals(date, components: [.year, .month, .day], using: calendar)
+//                    }
+                    hasProduct: false
                 ) {
                     self.selected = date
                 }
@@ -124,11 +125,11 @@ private struct CalendarCellView: View {
                 ZStack {
                     if isToday {
                         Circle()
-                            .fill(.primary(.normal))
+//                            .fill(.primary(.normal))
                             .frame(width: 32, height: 32)
                     } else if selected {
                         Circle()
-                            .stroke(.label(.normal), lineWidth: 1)
+//                            .stroke(.label(.normal), lineWidth: 1)
                             .frame(width: 32, height: 32)
                     } else {
                         Circle()
@@ -136,15 +137,15 @@ private struct CalendarCellView: View {
                             .frame(width: 32, height: 32)
                     }
                     Text("\(day)")
-                        .foregroundColor(isToday ? .background(.normal) : .label(.normal))
+//                        .foregroundColor(isToday ? .background(.normal) : .label(.normal))
                 }
                 Circle()
-                    .fill(.primary(.normal))
+//                    .fill(.primary(.normal))
                     .frame(width: 6, height: 6)
                     .opacity(hasProduct ? 1 : 0)
             }
         }
-        .scaledButton()
+//        .scaledButton()
         .disabled(!isCurrentMonthDay)
         .opacity(isCurrentMonthDay ? 1 : 0.5)
     }
