@@ -40,7 +40,10 @@ final class TrainerManager {
         try checkModelAvailability()
 
         let session = getSession(for: trainer)
-        let response = try await session.respond(to: prompt)
+        let response = try await session.respond(
+            to: prompt,
+            options: .init(temperature: 0.7)
+        )
         return response.content
     }
 
@@ -56,7 +59,10 @@ final class TrainerManager {
         try checkModelAvailability()
 
         let session = getSession(for: trainer)
-        let response = try await session.respond(to: "아래 헬스 정보를 요약해줘.\n\(health)")
+        print(session)
+        let response = try await session.respond(
+            to: "아래 운동 정보에 대한 칭찬과 격려의 동기부여 메시지를 제공해줘.\n\(health)"
+        )
         return response.content
     }
 
