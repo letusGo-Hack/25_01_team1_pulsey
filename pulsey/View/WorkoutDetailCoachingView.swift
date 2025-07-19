@@ -7,6 +7,7 @@
 
 import SwiftUI
 import HealthKit
+import FoundationModels
 
 struct WorkoutDetailCoachingView: View {
     let workout: HKWorkout
@@ -26,7 +27,13 @@ struct WorkoutDetailCoachingView: View {
                         TrainerCard(trainer: trainer, isSelected: false, onTap: {})
                     }
 
-                    MessageView(isPlaying: $isPlaying, message: coachingMessage)
+                    if coachingMessage.isEmpty == false {
+                        Text(coachingMessage)
+                            .padding(12)
+                            .glassEffect(in: .rect(cornerRadius: 18))
+                            .padding()
+                            .animation(.default, value: coachingMessage)
+                    }
 
                     WorkoutDetailView(workout: workout)
                 }
@@ -37,9 +44,10 @@ struct WorkoutDetailCoachingView: View {
         .task {
             guard let trainer else { return }
             do {
-                print(workout.description)
-                let response = try await TrainerManager.shared.respondWithHealthData(workout: workout, trainer: trainer)
-                self.coachingMessage = response
+                let stream = TrainerManager.shared.respondStreamWithHealthData(workout: workout, trainer: trainer)
+                for try await response in stream {
+                    self.coachingMessage = response
+                }
             } catch {
                 print(error)
                 self.coachingMessage = "코칭 메시지를 불러오지 못했습니다."
