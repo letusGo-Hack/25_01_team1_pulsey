@@ -9,15 +9,8 @@ import SwiftUI
 
 
 struct SelectCharacterView: View {
-    @State private var selectedTrainer: Int = 0
-    
-    let trainers = [
-        Trainer(id: 0, name: "장원영", imageName: "wonyoung_character", motivation: "오늘 하루도 파이팅! 작은 진전이 큰 변화를 만듭니다."),
-        Trainer(id: 1, name: "윤성빈", imageName: "sungbin_character", motivation: "당신의 목표를 향해 한 걸음씩 나아가세요. 함께 해요!"),
-        Trainer(id: 2, name: "프리렌", imageName: "frieren_character", motivation: "꾸준함이 최고의 무기입니다. 오늘도 최선을 다해봐요!"),
-        Trainer(id: 3, name: "기가채드", imageName: "chad_character", motivation: "자신을 믿으세요. 당신은 생각보다 훨씬 강합니다!")
-    ]
-    
+    @AppStorage("selectedTrainer") private var selectedTrainer: Int = 0
+
     var body: some View {
         NavigationView {
             VStack(spacing: 20) {
@@ -30,7 +23,7 @@ struct SelectCharacterView: View {
                     
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 16) {
-                            ForEach(trainers) { trainer in
+                            ForEach(Trainer.allTrainers) { trainer in
                                 TrainerCard(
                                     trainer: trainer,
                                     isSelected: selectedTrainer == trainer.id
@@ -49,7 +42,7 @@ struct SelectCharacterView: View {
                         .font(.headline)
                         .foregroundColor(.secondary)
                     
-                    Text(trainers[selectedTrainer].motivation)
+                    Text(Trainer.allTrainers[selectedTrainer].motivation)
                         .font(.body)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, 24)
@@ -65,7 +58,7 @@ struct SelectCharacterView: View {
                 
                 // 선택 완료 버튼
                 Button(action: {
-                    print("선택된 트레이너: \(trainers[selectedTrainer].name)")
+                    print("선택된 트레이너: \(Trainer.allTrainers[selectedTrainer].name)")
                 }) {
                     Text("트레이너 선택 완료")
                         .font(.headline)
