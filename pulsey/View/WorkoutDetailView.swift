@@ -12,19 +12,14 @@ struct WorkoutDetailView: View {
     let workout: HKWorkout
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 20) {
-                // 헤더 섹션
-                headerSection
+        VStack(spacing: 20) {
+            // 헤더 섹션
+            headerSection
 
-                // 주요 통계 섹션
-                mainStatsSection
-            }
-            .padding()
+            // 주요 통계 섹션
+            mainStatsSection
         }
-        .navigationTitle("운동 상세")
-        .navigationBarTitleDisplayMode(.inline)
-        .background(Color(.systemGroupedBackground))
+        .padding()
     }
 
     // MARK: - Header Section
@@ -54,19 +49,21 @@ struct WorkoutDetailView: View {
         .cornerRadius(12)
         .glassEffect()
     }
-
+    
     // MARK: - Main Stats Section
     private var mainStatsSection: some View {
         VStack(spacing: 16) {
             HStack(spacing: 16) {
                 // 지속 시간
-                StatCard(
-                    icon: "clock.fill",
-                    title: "시간",
-                    value: formattedDuration,
-                    color: .blue
-                )
-
+                if let formattedDuration {
+                    StatCard(
+                        icon: "clock.fill",
+                        title: "시간",
+                        value: formattedDuration,
+                        color: .blue
+                    )
+                }
+                
                 // 활성 칼로리
                 if let activeEnergyBurned = workout.totalEnergyBurned {
                     StatCard(
@@ -77,7 +74,7 @@ struct WorkoutDetailView: View {
                     )
                 }
             }
-
+            
             HStack(spacing: 16) {
                 // 총 거리
                 if let totalDistance = workout.totalDistance {
@@ -88,7 +85,7 @@ struct WorkoutDetailView: View {
                         color: .green
                     )
                 }
-
+                
                 // 평균 심박수 (메타데이터에서 가져올 수 있다면)
                 if let avgHeartRate = averageHeartRate {
                     StatCard(
@@ -178,22 +175,18 @@ extension WorkoutDetailView {
         formatter.dateFormat = "yyyy년 M월 d일 EEEE"
         return formatter.string(from: workout.startDate)
     }
-
-    private var formattedStartTime: String {
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "ko_KR")
-        formatter.dateFormat = "a h:mm"
-        return formatter.string(from: workout.startDate)
+    
+    private func formattedDistance(_ distance: HKQuantity) -> String {
+        let kilometers = distance.doubleValue(for: HKUnit.meterUnit(with: .kilo))
+        if kilometers >= 1.0 {
+            return String(format: "%.2f km", kilometers)
+        } else {
+            let meters = distance.doubleValue(for: HKUnit.meter())
+            return String(format: "%.0f m", meters)
+        }
     }
-
-    private var formattedEndTime: String {
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "ko_KR")
-        formatter.dateFormat = "a h:mm"
-        return formatter.string(from: workout.endDate)
-    }
-
-    private var formattedDuration: String {
+    
+    private var formattedDuration: String? {
         let duration = workout.duration
         let hours = Int(duration) / 3600
         let minutes = Int(duration) / 60 % 60
@@ -207,17 +200,7 @@ extension WorkoutDetailView {
             return String(format: "%d초", seconds)
         }
     }
-
-    private func formattedDistance(_ distance: HKQuantity) -> String {
-        let kilometers = distance.doubleValue(for: HKUnit.meterUnit(with: .kilo))
-        if kilometers >= 1.0 {
-            return String(format: "%.2f km", kilometers)
-        } else {
-            let meters = distance.doubleValue(for: HKUnit.meter())
-            return String(format: "%.0f m", meters)
-        }
-    }
-
+    
     private var averageHeartRate: Double? {
         // 메타데이터에서 평균 심박수를 찾기 (일반적으로는 별도 쿼리가 필요)
         // 여기서는 메타데이터에서 심박수 관련 정보가 있는지 확인
@@ -236,7 +219,7 @@ extension WorkoutDetailView {
         }
         return nil
     }
-
+    
     private func localizedMetadataKey(_ key: String) -> String {
         switch key {
         case HKMetadataKeyWeatherCondition:
@@ -260,7 +243,7 @@ extension WorkoutDetailView {
 // MARK: - Preview
 struct WorkoutDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView {
+        NavigationStack {
             WorkoutDetailView(workout: sampleWorkout)
         }
     }

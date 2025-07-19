@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 struct SelectCharacterView: View {
     @AppStorage("selectedTrainer") private var selectedTrainerId: Int = 0
     private var selectedTrainer: Trainer? {
@@ -15,7 +14,7 @@ struct SelectCharacterView: View {
     }
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack(spacing: 20) {
                 // 트레이너 선택 섹션
                 VStack(alignment: .leading, spacing: 16) {
@@ -93,6 +92,7 @@ struct TrainerCard: View {
             VStack(spacing: 12) {
                 Image(trainer.imageName)
                     .resizable()
+                    .aspectRatio(contentMode: .fit)
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                     .foregroundColor(isSelected ? .blue : .gray)
                     .padding(EdgeInsets(top: 10, leading: 6, bottom: 2, trailing: 6))
