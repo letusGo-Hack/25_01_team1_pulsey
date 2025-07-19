@@ -32,7 +32,7 @@ extension [HKWorkout] {
 
         // 사이클링 운동 데이터
         let cyclingStartDate = calendar.date(byAdding: .day, value: -1, to: now)!
-        let cyclingEndDate = calendar.date(byAdding: .day, value: -1, to: calendar.date(byAdding: .minute, value: 45, to: cyclingStartDate)!)!
+        let cyclingEndDate = calendar.date(byAdding: .hour, value: 1, to: cyclingStartDate)!
         let cyclingWorkout = HKWorkout(
             activityType: .cycling,
             start: cyclingStartDate,
