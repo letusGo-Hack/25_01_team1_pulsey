@@ -20,12 +20,15 @@ struct HomeView: View {
         VStack {
             Spacer()
             if let selectedTrainer {
-                VStack(spacing: 8) {
+                VStack(spacing: 12) {
                     Image(selectedTrainer.imageName)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(maxWidth: 192)
+                        .clipShape(.rect(cornerRadius: 12))
                     Text(selectedTrainer.name)
+                        .bold()
+                        .font(.title3)
                 }
                 .overlay {
                     MessageView(isPlaying: $isPlaying, message: "characterMessage")
