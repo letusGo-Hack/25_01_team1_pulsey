@@ -52,7 +52,9 @@ struct CalendarView: View {
             }
         }
         .navigationDestination(item: $clickedWorkout) { workout in
-            WorkoutDetailCoachingView(workout: workout)
+            WorkoutDetailCoachingView(workout: workout) {
+                clickedWorkout = nil
+            }
         }
         .task {
             do {

@@ -11,6 +11,7 @@ import FoundationModels
 
 struct WorkoutDetailCoachingView: View {
     let workout: HKWorkout
+    let onDismiss: () -> Void
 
     @AppStorage("selectedTrainer") private var selectedTrainer: Int = 0
     var trainer: Trainer? {
@@ -35,6 +36,14 @@ struct WorkoutDetailCoachingView: View {
             }
             .navigationTitle("운동 요약")
             .background(Color(.systemBackground))
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("닫기") {
+                        onDismiss()
+                    }
+                    .fontWeight(.medium)
+                }
+            }
         }
         .task {
             guard let trainer else { return }

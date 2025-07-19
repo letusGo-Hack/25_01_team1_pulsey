@@ -15,6 +15,6 @@ struct MessageView: View {
             .padding(12)
             .glassEffect(in: .rect(cornerRadius: 18))
             .padding()
-            .animation(.default, value: coachingMessage)
+            .animation(.default, value: message)
     }
 }

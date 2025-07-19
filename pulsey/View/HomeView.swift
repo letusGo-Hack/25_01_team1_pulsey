@@ -29,11 +29,10 @@ struct HomeView: View {
                     Text(selectedTrainer.name)
                         .bold()
                         .font(.title3)
-                }
-                .overlay {
-                    MessageView(message: "characterMessage")
-                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-                        .padding(.top, -54)
+
+                    if characterMessage.isEmpty == false {
+                        MessageView(message: characterMessage)
+                    }
                 }
             }
             
