@@ -6,8 +6,10 @@
 //
 
 import Foundation
+import FoundationModels
 
-struct Workout {
+@Generable
+struct Workout : Equatable {
     let nickname : String
     let sportsType : Set<Sport>
     let selectDays : Set<String>
