@@ -20,6 +20,7 @@ struct UserInfoView: View {
     
     // AppStorage로 Workout 데이터 저장
     @AppStorage("user_workout_data") private var workoutData: Data = Data()
+    @AppStorage("didFinishOnboarding") private var didFinishOnboarding: Bool = false
     
     let genderOptions = ["남성", "여성"]
     let weekDays = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"]
@@ -224,6 +225,8 @@ struct UserInfoView: View {
                     print("운동시간: \(durationText)")
                     
                     saveWorkoutData()
+                    
+                    self.didFinishOnboarding = true
                     
                     if !selectedSports.isEmpty {
                         let selectedSportNames = sports.filter { selectedSports.contains($0.id) }.map { $0.name }
