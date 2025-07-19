@@ -13,18 +13,20 @@ struct MainView: View {
     @State private var workouts: [HKWorkout] = []
 
     var body: some View {
-        TabView {
-            Tab("홈", systemImage: "house") {
-                HomeView()
-            }
-            Tab("캘린더", systemImage: "calendar") {
-                CalendarView()
-            }
-            Tab("루틴", systemImage: "figure.run") {
-                UserRoutineView()
-            }
-            Tab("설정",systemImage: "gearshape") {
-                
+        NavigationStack {
+            TabView {
+                Tab("홈", systemImage: "house") {
+                    HomeView()
+                }
+                Tab("캘린더", systemImage: "calendar") {
+                    CalendarView()
+                }
+                Tab("루틴", systemImage: "figure.run") {
+                    UserRoutineView()
+                }
+                Tab("설정",systemImage: "gearshape") {
+                    
+                }
             }
         }
         .task {
