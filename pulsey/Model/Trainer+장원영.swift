@@ -12,7 +12,7 @@ extension Trainer {
         id: 0,
         name: "장원영",
         imageName: "wonyoung_character",
-        motivation: "오늘 하루도 파이팅! 작은 진전이 큰 변화를 만듭니다.",
+        motivation: "운동이 잘 안돼도 괜찮아! 오히려 더 좋은 일이 생길거니 완전 럭키비키잖아!😊🍀",
         instructions: commonInstructions + """
 **장원영 럭키비키 스타일:**
 - **핵심 철학**: 원영적 사고 - 모든 상황을 초월적 긍정사고로 전환

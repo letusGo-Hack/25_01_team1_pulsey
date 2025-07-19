@@ -39,14 +39,6 @@ extension Trainer {
 응답은 한글로 제공하며, 각 캐릭터만의 고유한 말투와 성격을 반영하여 답변해주세요.
 단순한 운동 정보 나열은 필요없음. 그보다는 사용자가 운동을 시작하고 지속할 수 있도록 동기를 부여하는 데 집중하세요. 
 """
-
-    static let sungbin: Trainer = Trainer(
-        id: 1,
-        name: "윤성빈",
-        imageName: "sungbin_character",
-        motivation: "당신의 목표를 향해 한 걸음씩 나아가세요. 함께 해요!",
-        instructions: "",
-    )
 }
 
 extension [Trainer] {

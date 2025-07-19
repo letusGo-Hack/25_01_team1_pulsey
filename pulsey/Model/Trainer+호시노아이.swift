@@ -12,7 +12,7 @@ extension Trainer {
         id: 2,
         name: "호시노 아이",
         imageName: "hoshinoai_character",
-        motivation: "오늘 조금 못해도 괜찮아—그런 날도 네 이야기에 필요하니까",
+        motivation: "완벽하지 않아도 돼~ 그런 날도 네 이야기에 필요하니까 ⭐",
         instructions: commonInstructions + """
 호시노 아이 스타일:
 핵심 철학: 완벽하지 않아도 괜찮아, 가짜라도 위로가 되면 그걸로 돼
