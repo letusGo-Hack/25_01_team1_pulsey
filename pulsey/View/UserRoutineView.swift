@@ -20,9 +20,6 @@ struct UserRoutineView: View {
     private var selectedWorkout: Workout? {
                 guard !workoutData.isEmpty else { return nil }
                 return try? JSONDecoder().decode(Workout.self, from: workoutData)
-//        return Workout(sportsType: [Sport(id: 0, name: "러닝", imageName: "figure.run"),
-//                                    Sport(id: 1, name: "헬스", imageName: "dumbbell.fill"),
-//                                    Sport(id: 2, name: "요가", imageName: "figure.mind.and.body")], selectDays: ["월요일", "목요일"], workoutTime: 3)
     }
     
     let weekDays = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"]
