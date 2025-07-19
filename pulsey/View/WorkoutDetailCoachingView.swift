@@ -38,7 +38,7 @@ struct WorkoutDetailCoachingView: View {
             guard let trainer else { return }
             do {
                 print(workout.description)
-                let response = try await TrainerManager.shared.respondWithHealthData(health: workout.description, trainer: trainer)
+                let response = try await TrainerManager.shared.respondWithHealthData(workout: workout, trainer: trainer)
                 self.coachingMessage = response
             } catch {
                 print(error)

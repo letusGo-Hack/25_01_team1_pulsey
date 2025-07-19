@@ -7,30 +7,24 @@
 
 import Foundation
 import FoundationModels
+import HealthKit
 
-private extension Trainer {
-    var languageModelSession: LanguageModelSession {
-        let instructions = "너는 캐릭터 '\(self.name)'역할이야. 무조건 \(self.name) 스타일로 답변을 해야 해."
-        return LanguageModelSession(instructions: instructions)
-    }
-}
-
-class TrainerManager {
+final class TrainerManager {
     let model = SystemLanguageModel.default
     static let shared = TrainerManager()
 
     // 세션 캐싱을 위한 딕셔너리 추가
-    private var sessions: [String: LanguageModelSession] = [:]
+    private var sessions: [Trainer: LanguageModelSession] = [:]
 
     private init() {}
 
     // 세션을 가져오거나 생성하는 헬퍼 메서드
     private func getSession(for trainer: Trainer) -> LanguageModelSession {
-        if let existingSession = sessions[trainer.name] {
+        if let existingSession = sessions[trainer] {
             return existingSession
         } else {
-            let newSession = trainer.languageModelSession
-            sessions[trainer.name] = newSession
+            let newSession = LanguageModelSession(model: model, instructions: trainer.instructions)
+            sessions[trainer] = newSession
             return newSession
         }
     }
@@ -47,7 +41,10 @@ class TrainerManager {
         try checkModelAvailability()
 
         let session = getSession(for: trainer)
-        let response = try await session.respond(to: prompt)
+        let response = try await session.respond(
+            to: prompt,
+            options: .init(temperature: 0.7)
+        )
         return response.content
     }
 
@@ -59,11 +56,13 @@ class TrainerManager {
         return response.content
     }
 
-    func respondWithHealthData(health: String, trainer: Trainer) async throws -> String {
+    func respondWithHealthData(workout: HKWorkout, trainer: Trainer) async throws -> String {
         try checkModelAvailability()
 
         let session = getSession(for: trainer)
-        let response = try await session.respond(to: "아래 헬스 정보를 요약해줘.\n\(health)")
+        let response = try await session.respond(
+            to: "아래 운동 정보에 대한 칭찬과 격려의 동기부여 메시지를 제공해줘.\n\(workout.summaryDescription)"
+        )
         return response.content
     }
 
@@ -91,7 +90,7 @@ class TrainerManager {
 
     // 세션 초기화 메서드
     func resetSession(for trainer: Trainer) {
-        sessions.removeValue(forKey: trainer.name)
+        sessions.removeValue(forKey: trainer)
     }
 
     func resetAllSessions() {
