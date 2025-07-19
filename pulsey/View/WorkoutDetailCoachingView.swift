@@ -61,5 +61,5 @@ struct WorkoutDetailCoachingView: View {
 }
 
 #Preview {
-    WorkoutDetailCoachingView(workout: [HKWorkout].mock.randomElement()!)
+    WorkoutDetailCoachingView(workout: [HKWorkout].mock.randomElement()!) {}
 }
