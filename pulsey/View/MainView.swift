@@ -20,10 +20,10 @@ struct MainView: View {
             Tab("캘린더", systemImage: "calendar") {
                 CalendarView()
             }
-            Tab("루틴", systemImage: "") {
+            Tab("루틴", systemImage: "figure.run") {
                 UserRoutineView()
             }
-            Tab("설정",systemImage: "") {
+            Tab("설정",systemImage: "gearshape") {
                 
             }
         }
