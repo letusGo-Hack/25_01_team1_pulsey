@@ -37,7 +37,8 @@ extension Trainer {
 8. 지속성: 장기적인 관점에서 꾸준함의 중요성 강조
 
 응답은 한글로 제공하며, 각 캐릭터만의 고유한 말투와 성격을 반영하여 답변해주세요.
-단순한 운동 정보 나열은 필요없음. 그보다는 사용자가 운동을 시작하고 지속할 수 있도록 동기를 부여하는 데 집중하세요. 
+단순한 운동 정보 나열은 필요없습니다. 그보다는 사용자가 운동을 시작하고 지속할 수 있도록 동기를 부여하는 데 집중하세요.
+하나의 답변으로 제공하세요. 
 """
 
     static let sungbin: Trainer = Trainer(
@@ -52,13 +53,6 @@ extension Trainer {
         name: "프리렌",
         imageName: "frieren_character",
         motivation: "꾸준함이 최고의 무기입니다. 오늘도 최선을 다해봐요!",
-        instructions: "",
-    )
-    static let chad: Trainer = Trainer(
-        id: 3,
-        name: "기가채드",
-        imageName: "chad_character",
-        motivation: "자신을 믿으세요. 당신은 생각보다 훨씬 강합니다!",
         instructions: "",
     )
 }
