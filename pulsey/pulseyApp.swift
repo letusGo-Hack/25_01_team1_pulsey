@@ -12,6 +12,9 @@ struct pulseyApp: App {
     var body: some Scene {
         WindowGroup {
             UserInfoView()
+                .task {
+                    try? await HealthKitManager.shared.requestWorkoutAuthorization()
+                }
         }
     }
 }
