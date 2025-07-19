@@ -7,6 +7,7 @@
 
 import Foundation
 import FoundationModels
+import HealthKit
 
 final class TrainerManager {
     let model = SystemLanguageModel.default
@@ -55,13 +56,12 @@ final class TrainerManager {
         return response.content
     }
 
-    func respondWithHealthData(health: String, trainer: Trainer) async throws -> String {
+    func respondWithHealthData(workout: HKWorkout, trainer: Trainer) async throws -> String {
         try checkModelAvailability()
 
         let session = getSession(for: trainer)
-        print(session)
         let response = try await session.respond(
-            to: "아래 운동 정보에 대한 칭찬과 격려의 동기부여 메시지를 제공해줘.\n\(health)"
+            to: "아래 운동 정보에 대한 칭찬과 격려의 동기부여 메시지를 제공해줘.\n\(workout.summaryDescription)"
         )
         return response.content
     }

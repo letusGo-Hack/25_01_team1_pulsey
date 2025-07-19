@@ -14,7 +14,7 @@ struct StatsSection: View {
         VStack(spacing: 16) {
             HStack(spacing: 16) {
                 // 지속 시간
-                if let formattedDuration {
+                if let formattedDuration = workout.formattedDuration {
                     StatCard(
                         icon: "clock.fill",
                         title: "시간",
