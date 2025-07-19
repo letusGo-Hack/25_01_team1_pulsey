@@ -9,7 +9,10 @@ import SwiftUI
 
 
 struct SelectCharacterView: View {
-    @AppStorage("selectedTrainer") private var selectedTrainer: Int = 0
+    @AppStorage("selectedTrainer") private var selectedTrainerId: Int = 0
+    private var selectedTrainer: Trainer? {
+        Trainer.allTrainers.findTrainer(id: selectedTrainerId)
+    }
 
     var body: some View {
         NavigationView {
@@ -26,53 +29,54 @@ struct SelectCharacterView: View {
                             ForEach(Trainer.allTrainers) { trainer in
                                 TrainerCard(
                                     trainer: trainer,
-                                    isSelected: selectedTrainer == trainer.id
+                                    isSelected: selectedTrainerId == trainer.id
                                 ) {
-                                    selectedTrainer = trainer.id
+                                    selectedTrainerId = trainer.id
                                 }
                             }
                         }
                         .padding(.horizontal)
                     }
                 }
-                
-                // 선택된 트레이너의 동기부여 멘트
-                VStack(spacing: 12) {
-                    Text("💬 오늘의 메시지")
-                        .font(.headline)
-                        .foregroundColor(.secondary)
+                if let selectedTrainer {
+                    // 선택된 트레이너의 동기부여 멘트
+                    VStack(spacing: 12) {
+                        Text("💬 오늘의 메시지")
+                            .font(.headline)
+                            .foregroundColor(.secondary)
+                        
+                        Text(selectedTrainer.motivation)
+                            .font(.body)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 24)
+                            .padding(.vertical, 16)
+                            .background(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .fill(Color.blue.opacity(0.1))
+                            )
+                            .padding(.horizontal)
+                    }
                     
-                    Text(Trainer.allTrainers[selectedTrainer].motivation)
-                        .font(.body)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, 24)
-                        .padding(.vertical, 16)
-                        .background(
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(Color.blue.opacity(0.1))
-                        )
-                        .padding(.horizontal)
+                    Spacer()
+                    
+                    // 선택 완료 버튼
+                    Button(action: {
+                        print("선택된 트레이너: \(selectedTrainer.name)")
+                    }) {
+                        Text("트레이너 선택 완료")
+                            .font(.headline)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .fill(Color.blue)
+                            )
+                    }
+                    .padding(.horizontal)
+                    .padding(.bottom)
                 }
-                
-                Spacer()
-                
-                // 선택 완료 버튼
-                Button(action: {
-                    print("선택된 트레이너: \(Trainer.allTrainers[selectedTrainer].name)")
-                }) {
-                    Text("트레이너 선택 완료")
-                        .font(.headline)
-                        .fontWeight(.semibold)
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(Color.blue)
-                        )
-                }
-                .padding(.horizontal)
-                .padding(.bottom)
             }
             .navigationTitle("트레이너 선택")
         }
