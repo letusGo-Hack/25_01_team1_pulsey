@@ -8,34 +8,36 @@
 import Foundation
 import UserNotifications
 
-public struct LocalPushNotification {
-    /// 알림의 제목
+struct LocalPushNotification {
+    let identifier: String
     let title: String
-    /// 제목 아래에 표시되는 부제목
-    let subtitle: String?
-    /// 부제목 아래에 표시되는 본문 내용
-    let body: String?
-}
+    let body: String
+    let deepLink: String?
 
-// MARK: - UNNotificationRequest Conversion
+    init(identifier: String, title: String, body: String, deepLink: String? = nil) {
+        self.identifier = identifier
+        self.title = title
+        self.body = body
+        self.deepLink = deepLink
+    }
 
-public extension LocalPushNotification {
     func toNotificationRequest() -> UNNotificationRequest {
         let content = UNMutableNotificationContent()
         content.title = title
+        content.body = body
+        content.sound = .default
 
-        if let subtitle {
-            content.subtitle = subtitle
+        // 딥링크 정보 추가
+        if let deepLink = deepLink {
+            content.userInfo = ["deepLink": deepLink]
         }
 
-        if let body {
-            content.body = body
-        }
-
-        return UNNotificationRequest(
-            identifier: .init(),
+        let request = UNNotificationRequest(
+            identifier: identifier,
             content: content,
-            trigger: UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+            trigger: nil // 즉시 발송
         )
+
+        return request
     }
 }
