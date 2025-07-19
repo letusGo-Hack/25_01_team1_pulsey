@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SelectCharacterView: View {
     @AppStorage("selectedTrainer") private var selectedTrainerId: Int = 0
+    @AppStorage("didSelectTrainer") var didSelectTrainer: Bool = false
     private var selectedTrainer: Trainer? {
         Trainer.allTrainers.findTrainer(id: selectedTrainerId)
     }
@@ -61,6 +62,7 @@ struct SelectCharacterView: View {
                     // 선택 완료 버튼
                     Button(action: {
                         print("선택된 트레이너: \(selectedTrainer.name)")
+                        didSelectTrainer = true
                     }) {
                         Text("트레이너 선택 완료")
                             .font(.headline)

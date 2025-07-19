@@ -11,6 +11,7 @@ import HealthKit
 @main
 struct pulseyApp: App {
     @AppStorage("didFinishOnboarding") var didFinishOnboarding: Bool = false
+    @AppStorage("didSelectTrainer") var didSelectTrainer: Bool = false
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
 
     var body: some Scene {
@@ -28,12 +29,10 @@ struct pulseyApp: App {
                     .onOpenURL { url in
                         DeepLinkManager.handleDeepLink(url)
                     }
-            }
-            else {
+            } else if !didSelectTrainer {
+                SelectCharacterView()
+            } else {
                 MainView()
-                    .launchScreen {
-                        LaunchScreenView()
-                    }
                     .task {
                         _ = await NotificationManager.requestNotificationPermission()
                         try? await HealthKitManager.shared.requestWorkoutAuthorization()
