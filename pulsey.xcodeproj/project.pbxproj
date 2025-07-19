@@ -29,9 +29,22 @@
 		B7EA23B52E2B321D00303E96 /* pulseyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = pulseyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		E576E9CB2E2B6AAF00CEF495 /* Exceptions for "pulsey" folder in "pulsey" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = B7EA239D2E2B321C00303E96 /* pulsey */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		B7EA23A02E2B321C00303E96 /* pulsey */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				E576E9CB2E2B6AAF00CEF495 /* Exceptions for "pulsey" folder in "pulsey" target */,
+			);
 			path = pulsey;
 			sourceTree = "<group>";
 		};
@@ -400,6 +413,9 @@
 				DEVELOPMENT_TEAM = 6DHKU7U5G5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = pulsey/Info.plist;
+				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "운동 데이터 연동을 위해 권한을 요청합니다.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "운동 데이터 연동을 위해 권한을 요청합니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -432,6 +448,9 @@
 				DEVELOPMENT_TEAM = 6DHKU7U5G5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = pulsey/Info.plist;
+				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "운동 데이터 연동을 위해 권한을 요청합니다.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "운동 데이터 연동을 위해 권한을 요청합니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
