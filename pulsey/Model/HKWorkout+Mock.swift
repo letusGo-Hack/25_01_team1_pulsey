@@ -9,7 +9,7 @@ import Foundation
 import HealthKit
 
 extension [HKWorkout] {
-    static func mock() -> [HKWorkout] {
+    static let mock: [HKWorkout] = {
         let calendar = Calendar.current
         let now = Date()
 
@@ -223,7 +223,7 @@ extension [HKWorkout] {
         mockWorkouts.append(hikingWorkout)
 
         return mockWorkouts
-    }
+    }()
 }
 
 // MARK: - 메타데이터 접근을 위한 확장

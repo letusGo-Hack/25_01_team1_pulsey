@@ -12,19 +12,16 @@ struct WorkoutDetailView: View {
     let workout: HKWorkout
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 20) {
-                // 헤더 섹션
-                headerSection
+        VStack(spacing: 20) {
+            // 헤더 섹션
+            headerSection
 
                 // 주요 통계 섹션
                 StatsSection(workout: workout)
             }
             .padding()
         }
-        .navigationTitle("운동 상세")
-        .navigationBarTitleDisplayMode(.inline)
-        .background(Color(.systemGroupedBackground))
+        .padding()
     }
 
     // MARK: - Header Section

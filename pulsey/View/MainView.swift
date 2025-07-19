@@ -26,7 +26,7 @@ struct MainView: View {
         }
         .fullScreenCover(item: $deepLinkManager.selectedWorkoutID) { selectedWorkoutID in
             if let workout = workouts.first(where: { $0.uuid.uuidString == selectedWorkoutID }) {
-                WorkoutDetailView(workout: workout)
+                WorkoutDetailCoachingView(workout: workout)
             } else {
                 WorkoutNotFoundView {
                     deepLinkManager.selectedWorkoutID = nil

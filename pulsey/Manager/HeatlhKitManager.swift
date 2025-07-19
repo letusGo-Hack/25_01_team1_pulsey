@@ -46,7 +46,7 @@ final class HealthKitManager {
     func fetchWorkouts() async throws -> [HKWorkout] {
         // 시뮬레이터 환경에서는 목데이터 반환
         if isSimulator {
-            return .mock()
+            return .mock
         }
 
         let workoutType = HKObjectType.workoutType()
@@ -97,7 +97,7 @@ final class HealthKitManager {
 
     /// Mock 운동 데이터 변경사항을 시뮬레이션 (시뮬레이터용)
     private func observeMockWorkoutUpdates() async throws {
-        let mockWorkouts = [HKWorkout].mock()
+        let mockWorkouts = [HKWorkout].mock
 
         for await _ in AsyncStream<Void> { continuation in
             let timer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true) { _ in
