@@ -44,8 +44,8 @@ struct HomeView: View {
     func sendMessage() {
         Task {
             do {
-                let response = try await CharacterManager.shared.respond(character: .frieren, prompt)
-                self.characterMessage = response
+//                let response = CharacterManager.shared.respond(trainer: , prompt)
+//                self.characterMessage = response
             } catch {
                 print(error)
             }
