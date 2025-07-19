@@ -12,17 +12,23 @@ import HealthKit
 struct pulseyApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @State private var workouts: [HKWorkout] = []
+    @State private var deepLinkManager = DeepLinkManager.shared
 
     var body: some Scene {
         WindowGroup {
-            if let workout = workouts.last {
-                WorkoutDetailView(workout: workout)
-            } else {
-                UserInfoView()
-                    .task {
-                        try? await HealthKitManager.shared.requestWorkoutAuthorization()
-                        self.workouts = (try? await HealthKitManager.shared.fetchWorkouts()) ?? []
-                    }
+            VStack {
+                if let workout = workouts.last {
+                    WorkoutDetailView(workout: workout)
+                } else {
+                    UserInfoView()
+                        .task {
+                            try? await HealthKitManager.shared.requestWorkoutAuthorization()
+                            self.workouts = (try? await HealthKitManager.shared.fetchWorkouts()) ?? []
+                        }
+                }
+            }
+            .onOpenURL { url in
+                DeepLinkManager.handleDeepLink(url)
             }
         }
     }

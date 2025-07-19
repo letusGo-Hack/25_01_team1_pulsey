@@ -189,10 +189,10 @@ final class HealthKitManager {
         let duration = Int(workout.duration / 60) // 분 단위
 
         return LocalPushNotification(
+            identifier: "workout_\(workout.uuid.uuidString)",
             title: "운동 완료! 🎉",
-            subtitle: nil,
             body: "\(workoutName) \(duration)분 운동을 완료했습니다!",
-            deepLink: "pulsey://workout/\(workout.uuid.uuidString)"
+            deepLink: "pulsey://workout?id=\(workout.uuid.uuidString)" // 형식 변경
         )
     }
 
