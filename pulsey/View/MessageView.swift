@@ -17,12 +17,10 @@ struct MessageView: View {
     
     var body: some View {
         FlowLayout {
-            HStack(spacing: 0) {
-                ForEach(Array(displayedContent.enumerated()), id: \.0) { _, char in
-                    CharacterView(
-                        character: char
-                    )
-                }
+            ForEach(Array(displayedContent.enumerated()), id: \.0) { _, char in
+                CharacterView(
+                    character: char
+                )
             }
         }
         .padding(15)
