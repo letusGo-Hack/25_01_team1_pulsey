@@ -16,10 +16,8 @@ struct WorkoutDetailView: View {
             // 헤더 섹션
             headerSection
 
-                // 주요 통계 섹션
-                StatsSection(workout: workout)
-            }
-            .padding()
+            // 주요 통계 섹션
+            StatsSection(workout: workout)
         }
         .padding()
     }
