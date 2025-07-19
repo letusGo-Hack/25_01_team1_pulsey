@@ -14,7 +14,7 @@ struct SelectCharacterView: View {
     }
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack(spacing: 20) {
                 // 트레이너 선택 섹션
                 VStack(alignment: .leading, spacing: 16) {

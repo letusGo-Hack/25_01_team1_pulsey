@@ -19,7 +19,7 @@ struct WorkoutDetailCoachingView: View {
     @State private var isPlaying: Bool = false
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView {
                 VStack {
                     if let trainer {
