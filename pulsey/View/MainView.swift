@@ -23,8 +23,8 @@ struct MainView: View {
             Tab("루틴", systemImage: "figure.run") {
                 UserRoutineView()
             }
-            Tab("설정",systemImage: "gearshape") {
-                
+            Tab("설정",systemImage: "gearshape.circle") {
+                SettingView()
             }
         }
         .task {
