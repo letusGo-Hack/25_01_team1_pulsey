@@ -19,7 +19,7 @@ struct WorkoutNotFoundView: View {
     let onDismiss: () -> Void
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack(spacing: 20) {
                 Image(systemName: "exclamationmark.triangle")
                     .font(.system(size: 60))

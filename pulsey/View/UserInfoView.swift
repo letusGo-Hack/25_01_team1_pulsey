@@ -37,7 +37,7 @@ struct UserInfoView: View {
     ]
     
     var body: some View {
-        //        NavigationView {
+        //        NavigationStack {
         //
         //            .navigationTitle("개인 정보 입력")
         //        }
