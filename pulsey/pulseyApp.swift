@@ -10,19 +10,19 @@ import HealthKit
 
 @main
 struct pulseyApp: App {
-    @State private var workouts: [HKWorkout] = []
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
 
     var body: some Scene {
         WindowGroup {
-            if let workout = workouts.last {
-                WorkoutDetailView(workout: workout)
-            } else {
-                UserInfoView()
-                    .task {
-                        try? await HealthKitManager.shared.requestWorkoutAuthorization()
-                        self.workouts = (try? await HealthKitManager.shared.fetchWorkouts()) ?? []
-                    }
-            }
+            MainView()
+                .task {
+                    _ = await NotificationManager.requestNotificationPermission()
+                    try? await HealthKitManager.shared.requestWorkoutAuthorization()
+                    let _ = try? await HealthKitManager.shared.startObservingWorkouts()
+                }
+                .onOpenURL { url in
+                    DeepLinkManager.handleDeepLink(url)
+                }
         }
     }
 }
