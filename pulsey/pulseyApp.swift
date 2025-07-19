@@ -15,6 +15,9 @@ struct pulseyApp: App {
     var body: some Scene {
         WindowGroup {
             MainView()
+                .launchScreen {
+                    LaunchScreenView()
+                }
                 .task {
                     _ = await NotificationManager.requestNotificationPermission()
                     try? await HealthKitManager.shared.requestWorkoutAuthorization()
