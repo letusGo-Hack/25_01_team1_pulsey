@@ -17,6 +17,7 @@ struct CalendarView: View {
             $0.startDate.equals(selectedDate, components: [.day])
         }
     }
+    @State private var clickedWorkout: HKWorkout?
     
     var body: some View {
         ScrollView {
@@ -25,10 +26,33 @@ struct CalendarView: View {
                     .datePickerStyle(.graphical)
                 Divider()
                 if let selectedWorkout {
-                    StatsSection(workout: selectedWorkout)
-                        .padding(.horizontal, 12)
+                    VStack(spacing: 0) {
+                        Button {
+                            clickedWorkout = selectedWorkout
+                        } label: {
+                            HStack {
+                                Text("운동 정보")
+                                    .foregroundStyle(.black)
+                                    .bold()
+                                    .font(.title3)
+                                Spacer()
+                                Image(systemName: "chevron.right")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 14, height: 14)
+                                    .opacity(0.4)
+                            }
+                            .padding(.horizontal, 14)
+                        }
+                        WorkoutDetailView(workout: selectedWorkout)
+                    }
+                    .padding(.horizontal, 4)
+                    .padding(.top, 8)
                 }
             }
+        }
+        .navigationDestination(item: $clickedWorkout) { workout in
+            WorkoutDetailCoachingView(workout: workout)
         }
         .task {
             do {
@@ -42,5 +66,7 @@ struct CalendarView: View {
 }
 
 #Preview {
-    CalendarView()
+    NavigationStack {
+        CalendarView()
+    }
 }
