@@ -7,9 +7,10 @@
 
 import Foundation
 
-struct Trainer {
-    let type : String
-    let image : String
+struct Trainer: Identifiable {
+    let id: Int
+    let name: String
+    let imageName: String
     // 예시 말투?
-    let description : String
+    let motivation: String
 }
